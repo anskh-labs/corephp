@@ -44,12 +44,12 @@ class ViewRenderer implements RendererInterface
             $this->params = array_merge($this->params, $params);
         }
         extract($this->params, EXTR_SKIP);
-        $filename = $this->viewPath . DS . $view . $this->fileExtension;
+        $filename = $this->viewPath . '/' . $view . $this->fileExtension;
         ob_start();
         if (file_exists($filename))
             require $filename;
         else
-            echo "File '" . ROOT . DS . "$filename' doesn't exists.";
+            echo "File '$filename' doesn't exists.";
         return ob_get_clean();
     }
 

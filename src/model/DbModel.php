@@ -334,15 +334,15 @@ abstract class DbModel extends Model
     /**
      * findColumn
      *
-     * @param  mixed $where
      * @param  mixed $column
+     * @param  mixed $where
      * @param  mixed $limit
      * @param  mixed $offset
      * @param  mixed $orderby
      * @param  mixed $db
      * @return array
      */
-    public static function findColumn(array|string|null $where = null, string $column = '*', int $limit = 0, int $offset = -1, string|null $orderby = null, ?Database $db = null): array
+    public static function findColumn(string $column, array|string|null $where = null, int $limit = 0, int $offset = -1, string|null $orderby = null, ?Database $db = null): array
     {
         return static::db($db)->select(static::table(), $column, $where, $limit, $offset, $orderby, PDO::FETCH_COLUMN);
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Corephp\Helper;
 
-use Corephp\Component\Mail\SMTPSender;
 use Corephp\Http\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,8 +21,7 @@ class Service
 {
     protected static ?ServerRequestInterface $request = null;
     protected static ?ResponseInterface $response = null;
-    protected static ?SMTPSender $mail = null;
-
+    
     /**
      * request
      *
@@ -60,19 +58,6 @@ class Service
     public static function session(string $sessionAttribute = '__session'): SessionInterface
     {
         return static::$request->getAttribute($sessionAttribute);
-    }
-    /**
-     * mail
-     *
-     * @return SMTPSender
-     */
-    public static function mail(): SMTPSender
-    {
-        if (!static::$mail) {
-            static::$mail = new SMTPSender(config('mail.config'));
-        }
-
-        return static::$mail;
     }
     /**
      * sanitize

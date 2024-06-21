@@ -39,7 +39,7 @@ class App implements RequestHandlerRunnerInterface
      *
      * @return void
      */
-    public function __construct(string $configDir = 'app' . DS . 'config')
+    public function __construct(string $configDir = 'app/config')
     {
         Config::init($configDir);
         $this->response = Service::response(make(Response::class));

@@ -265,7 +265,8 @@ class Database
         } else {
             $result = $stmt->fetchAll($fetch);
         }
-        return $result ? $result : [];
+        
+        return is_array($result) ?  $result : [];
     }
 
     /**
@@ -302,7 +303,8 @@ class Database
             $stmt->execute();
         }
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        return $result === false ? 0 : $result;
+        
+        return is_bool($result) ? 0 : intval($result);
     }
 
     /**
@@ -326,7 +328,8 @@ class Database
             $stmt->execute();
         }
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        return $result === 1 ? true : false;
+        
+        return intval($result) === 1 ? true : false;
     }
     /**
      * drop

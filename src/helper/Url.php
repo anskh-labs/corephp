@@ -22,11 +22,10 @@ class Url
     /**
      * getBasePath
      *
-     * @param  mixed $path
-     * @param  mixed $hideString
+     * @param  string $path
      * @return string
      */
-    public static function getBasePath(string $path = '', string $hideString = '/public'): string
+    public static function getBasePath(string $path = ''): string
     {
         if (static::$basePath === null) {
             if (array_key_exists('PATH_INFO', $_SERVER) === true) {
@@ -34,11 +33,6 @@ class Url
             } else {
                 $toReplace = '/' . basename($_SERVER['SCRIPT_FILENAME']);
                 $basePath = str_replace($toReplace, '', $_SERVER['PHP_SELF']);
-            }
-            if($hideString){
-                if (str_ends_with($basePath, $hideString) === true) {
-                    $basePath = str_replace('/public', '', $basePath);
-                }
             }
             static::$basePath = $basePath;
         }
@@ -49,7 +43,7 @@ class Url
     /**
      * getSiteUrl
      *
-     * @param  mixed $url
+     * @param  string $url
      * @return string
      */
     public static function getSiteUrl(string $url = ''): string
@@ -70,16 +64,21 @@ class Url
     /**
      * getHostUrl
      *
-     * @param  mixed $path
+     * @param  string $path
      * @return string
      */
     public static function getHostUrl(string $path = ''): string
     {
         if (static::$hostUrl === null) {
-            static::$hostUrl = sprintf(
-                "%s://%s",
-                isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-                $_SERVER['HTTP_HOST']);
+            if(CORE_ENVIRONMENT == 'production'){
+                static::$hostUrl = sprintf(
+                    "https://%s", $_SERVER['HTTP_HOST']);
+            }else{
+                static::$hostUrl = sprintf(
+                    "%s%s",
+                    isset($_SERVER['HTTPS']) ? 'https://' : 'http://',
+                    $_SERVER['HTTP_HOST']);
+            }
         }
 
         return static::$hostUrl . $path;
@@ -93,12 +92,12 @@ class Url
      */
     public static function getCurrentPath(string $query = ''): string
     {
-        $parseurl = static::getParseUrl();
         if($query){
             $query = '?' . $query;
         }
-
-        return sprintf("%s%s", $parseurl['path'], $query);
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        
+        return sprintf("%s%s", $path, $query);
     }
     
     /**
